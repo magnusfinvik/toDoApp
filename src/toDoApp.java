@@ -1,7 +1,5 @@
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.*;
 
 
 /**
@@ -9,11 +7,11 @@ import java.util.LinkedList;
  */
 public class toDoApp {
 
-    LinkedList<ToDoItem> toDoList = new LinkedList();
+    private Map<String,ToDoItem> toDoList = new TreeMap<>();
 
     public void add(ToDoItem inputTask) {
 
-        toDoList.add(inputTask);
+        toDoList.put(inputTask.getTitle(), inputTask);
     }
 
     public int getSize() {
@@ -21,48 +19,39 @@ public class toDoApp {
         return toDoList.size();
     }
 
-    public void remove(ToDoItem removeInput) {
-
-        int index = toDoList.indexOf(removeInput);
-        toDoList.remove(index);
+    public void remove(String key) {
+        toDoList.remove(key);
     }
 
-    public LinkedList getTasks() {
+    public Map getTasks() {
 
         return toDoList;
     }
 
-    public void addFromTaskList(ToDoItem inputItem) {
-        while(getSize()!= 100000){
-            toDoList.add(inputItem);
+    public void setPriority(String key, int priority) {
+        toDoList.get(key).setPriority(priority);
+    }
+
+    public int getPriority(String key) {
+        return toDoList.get(key).getPriority();
+    }
+
+    public List sortAscending() {
+        List list = new LinkedList(toDoList.values());
+        Collections.sort(list);
+        return list;
+    }
+
+    public List sortDescending() {
+        List list = new LinkedList(toDoList.values());
+        Collections.sort(list);
+        Collections.reverse(list);
+        return  list;
+    }
+
+    public void add(List<ToDoItem> taskList) {
+        for(ToDoItem item: taskList){
+            toDoList.put(item.getTitle(), item);
         }
-    }
-
-    public void removeSpecific(String title) {
-        for(int i = 0; i < toDoList.size(); i++){
-            if(toDoList.get(i).getTitle().equals(title)){
-                toDoList.remove(i);
-            }
-        }
-    }
-
-    public void setPriority(ToDoItem item, int priority) {
-        int index = toDoList.indexOf(item);
-        toDoList.get(index).setPriority(priority);
-    }
-
-    public int getPriority(ToDoItem item) {
-        return item.getPriority();
-    }
-
-    public void sortAscending() {
-
-            Collections.sort(toDoList);
-    }
-
-    public void sortDescending() {
-
-            Collections.sort(toDoList);
-            Collections.reverse(toDoList);
     }
 }

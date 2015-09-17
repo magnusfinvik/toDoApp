@@ -40,17 +40,8 @@ public class toDoAppTest {
     public void remove_removeOneItem(){
         app.add(item1);
         app.add(item2);
-        app.remove(item2);
-        assertEquals(1, app.getSize());
-    }
-
-    @Test
-    public void remove_removeItemInTheMiddle(){
-        app.add(item1);
-        app.add(item2);
-        app.add(item3);
-        app.remove(item2);
-        assertTrue(app.getTasks().get(1).equals(item3));
+        app.remove(item2.getTitle());
+        assertFalse(app.getTasks().containsKey(item2.getTitle()));
     }
 
     @Test
@@ -58,25 +49,17 @@ public class toDoAppTest {
         app.add(item1);
         app.add(item2);
         app.add(item3);
-        app.remove(item3);
-        assertFalse(app.getTasks().contains(item3));
+        app.remove(item3.getTitle());
+        assertFalse(app.getTasks().containsKey(item3.getTitle()));
     }
 
     @Test
     public void addFromTaskList_addAtleast100000Items() {
-        taskList.add(item1);
-        app.addFromTaskList(taskList.get(0));
+        for(int i = 0; i < 100000; i++) {
+            taskList.add(new ToDoItem("" + i, "yes"));
+        }
+        app.add(taskList);
         assertEquals(100000, app.getSize());
-    }
-
-    @Test
-    public void removeSpecificItem_removeTaskThree(){
-        app.add(item1);
-        app.add(item2);
-        app.add(item3);
-        app.add(new ToDoItem("four", "go to schooool, or be coool"));
-        app.removeSpecific(item3.getTitle());
-        assertFalse(app.getTasks().contains(item3));
     }
 
     @Test
@@ -84,35 +67,33 @@ public class toDoAppTest {
         app.add(item1);
         app.add(item2);
         app.add(item3);
-        app.setPriority(item2, 1);
-        assertEquals(1, app.getPriority(item2));
+        app.setPriority(item2.getTitle(), 1);
+        assertEquals(1, app.getPriority(item2.getTitle()));
     }
 
     @Test
     public void checkDeafaultPriority(){
         app.add(item1);
-        assertEquals(3, app.getPriority(item1));
+        assertEquals(3, app.getPriority(item1.getTitle()));
     }
 
     @Test
     public void sortItems_sortItemsListBasedOnPriority_ascending(){
         app.add(item1);
-        app.setPriority(item1, 2);
+        app.setPriority(item1.getTitle(), 2);
         app.add(item2);
         app.add(item3);
-        app.setPriority(item3, 1);
-        app.sortAscending();
-        assertEquals(item3, app.getTasks().getFirst());
+        app.setPriority(item3.getTitle(), 1);
+        assertEquals(item3, app.sortAscending().get(0));
     }
 
     @Test
     public void sortItems_sortItemsListBasedOnPriority_descending(){
         app.add(item1);
-        app.setPriority(item1, 2);
+        app.setPriority(item1.getTitle(), 2);
         app.add(item2);
         app.add(item3);
-        app.setPriority(item3, 1);
-        app.sortDescending();
-        assertEquals(item2, app.getTasks().getFirst());
+        app.setPriority(item3.getTitle(), 1);
+        assertEquals(item2, app.sortDescending().get(0));
     }
 }
